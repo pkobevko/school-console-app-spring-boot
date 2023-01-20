@@ -32,7 +32,7 @@ public class StudentDaoImpl implements StudentDao {
 
     @Override
     public List<Student> getAll() {
-        return jdbcTemplate.query(SELECT_ALL_SQL, new StudentRowMapper());
+        return jdbcTemplate.query(SELECT_ALL_SQL, studentRowMapper);
     }
 
     @Override
