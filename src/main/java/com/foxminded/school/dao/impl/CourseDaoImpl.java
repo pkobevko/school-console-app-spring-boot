@@ -3,6 +3,7 @@ package com.foxminded.school.dao.impl;
 import com.foxminded.school.dao.CourseDao;
 import com.foxminded.school.dao.rowmapper.CourseRowMapper;
 import com.foxminded.school.domain.model.Course;
+import lombok.NonNull;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -36,12 +37,12 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public int save(Course course) {
+    public int save(@NonNull Course course) {
         return jdbcTemplate.update(INSERT_COURSE_SQL, course.getName(), course.getDescription());
     }
 
     @Override
-    public int update(Course course) {
+    public int update(@NonNull Course course) {
         return jdbcTemplate.update(UPDATE_COURSE_SQL, course.getName(), course.getDescription(), course.getId());
     }
 

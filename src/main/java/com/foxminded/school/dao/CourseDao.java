@@ -1,6 +1,7 @@
 package com.foxminded.school.dao;
 
 import com.foxminded.school.domain.model.Course;
+import lombok.NonNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +11,9 @@ public interface CourseDao {
 
     List<Course> getAll();
 
-    int save(Course course);
+    int save(@NonNull Course course);
 
-    int update(Course course);
+    int update(@NonNull Course course);
 
     int delete(int id);
 }

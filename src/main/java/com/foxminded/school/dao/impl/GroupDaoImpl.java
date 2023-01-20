@@ -3,6 +3,7 @@ package com.foxminded.school.dao.impl;
 import com.foxminded.school.dao.GroupDao;
 import com.foxminded.school.dao.rowmapper.GroupRowMapper;
 import com.foxminded.school.domain.model.Group;
+import lombok.NonNull;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -36,12 +37,12 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public int save(Group group) {
+    public int save(@NonNull Group group) {
         return jdbcTemplate.update(INSERT_GROUP_SQL, group.getName());
     }
 
     @Override
-    public int update(Group group) {
+    public int update(@NonNull Group group) {
         return jdbcTemplate.update(UPDATE_GROUP_SQL, group.getName(), group.getId());
     }
 
