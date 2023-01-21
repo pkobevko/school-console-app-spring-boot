@@ -2,13 +2,15 @@ package com.foxminded.school.dao.impl;
 
 import com.foxminded.school.dao.StudentDao;
 import com.foxminded.school.dao.rowmapper.StudentRowMapper;
-import com.foxminded.school.domain.model.Student;
+import com.foxminded.school.model.Student;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class StudentDaoImpl implements StudentDao {
     private static final String SELECT_BY_ID_SQL = "SELECT id, group_id, first_name, last_name FROM students WHERE id = ?;";
     private static final String SELECT_ALL_SQL = "SELECT id, group_id, first_name, last_name FROM students;";

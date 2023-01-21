@@ -2,14 +2,16 @@ package com.foxminded.school.dao.impl;
 
 import com.foxminded.school.dao.CourseDao;
 import com.foxminded.school.dao.rowmapper.CourseRowMapper;
-import com.foxminded.school.domain.model.Course;
+import com.foxminded.school.model.Course;
 import lombok.NonNull;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class CourseDaoImpl implements CourseDao {
     private static final String SELECT_BY_ID_SQL = "SELECT id, name, description FROM courses WHERE id = ?;";
     private static final String SELECT_ALL_SQL = "SELECT id, name, description FROM courses;";

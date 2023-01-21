@@ -2,14 +2,16 @@ package com.foxminded.school.dao.impl;
 
 import com.foxminded.school.dao.GroupDao;
 import com.foxminded.school.dao.rowmapper.GroupRowMapper;
-import com.foxminded.school.domain.model.Group;
+import com.foxminded.school.model.Group;
 import lombok.NonNull;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class GroupDaoImpl implements GroupDao {
     private static final String SELECT_BY_ID_SQL = "SELECT id, name FROM groups WHERE id = ?;";
     private static final String SELECT_ALL_SQL = "SELECT id, name FROM groups;";
