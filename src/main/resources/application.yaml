@@ -1,11 +1,12 @@
-app:
+spring:
   datasource:
     main:
       driver-class-name: org.postgresql.Driver
       jdbc-url: jdbc:postgresql://localhost:5432/school_db
       username: postgres
       password: '1234'
-      pool-size: 30
+      hikari:
+        maximum-pool-size: 30
 
 server:
   error:
