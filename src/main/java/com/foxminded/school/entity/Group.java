@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Group {
-    private Integer id;
+    private int id;
     private String name;
 }
