@@ -19,6 +19,10 @@ public class CourseDaoImpl implements CourseDao {
     private static final String INSERT_COURSE_SQL = "INSERT INTO courses(name, description) VALUES (?, ?);";
     private static final String UPDATE_COURSE_SQL = "UPDATE courses SET name = ?, description = ? WHERE id = ?;";
     private static final String DELETE_BY_ID_SQL = "DELETE FROM courses WHERE id = ?;";
+    private static final String SELECT_ALL_BY_STUDENT_ID_SQL = "SELECT courses.id, courses.name, courses.description " +
+                                                               "FROM students_courses INNER JOIN courses ON courses.id = students_courses.course_id " +
+                                                               "WHERE student_id = ?;";
+    private static final String SELECT_BY_COURSE_NAME_SQL = "SELECT * FROM courses WHERE courses.name = ?;";
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Course> courseRowMapper = new CourseRowMapper();
@@ -53,5 +57,22 @@ public class CourseDaoImpl implements CourseDao {
     @Override
     public int delete(int id) {
         return jdbcTemplate.update(DELETE_BY_ID_SQL, id);
+    }
+
+    @Override
+    public void saveAll(@NonNull List<Course> courses) {
+        courses.forEach(course -> save(course));
+    }
+
+    @Override
+    public List<Course> getAllByStudentId(int studentId) {
+        return jdbcTemplate.query(SELECT_ALL_BY_STUDENT_ID_SQL, courseRowMapper, studentId);
+    }
+
+    @Override
+    public Optional<Course> getByName(@NonNull String courseName) {
+        return jdbcTemplate.query(SELECT_BY_COURSE_NAME_SQL, courseRowMapper, courseName)
+            .stream()
+            .findFirst();
     }
 }

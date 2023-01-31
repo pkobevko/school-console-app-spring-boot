@@ -64,4 +64,9 @@ public class GroupServiceImpl implements GroupService {
             throw new NotFoundException(String.format("Group with id %d not found", id));
         });
     }
+
+    @Override
+    public List<Group> getAllByEqualOrLessStudentsCount(int studentsCount) {
+        return groupDao.getAllByEqualOrLessStudentsCount(studentsCount);
+    }
 }

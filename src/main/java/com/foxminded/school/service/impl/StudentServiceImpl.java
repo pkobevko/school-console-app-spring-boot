@@ -1,6 +1,7 @@
 package com.foxminded.school.service.impl;
 
 import com.foxminded.school.dao.StudentDao;
+import com.foxminded.school.entity.Course;
 import com.foxminded.school.entity.Student;
 import com.foxminded.school.exception.NotFoundException;
 import com.foxminded.school.service.StudentService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -63,5 +65,37 @@ public class StudentServiceImpl implements StudentService {
         }, () -> {
             throw new NotFoundException(String.format("Student with id %d not found", id));
         });
+    }
+
+    @Override
+    public void assignToCourses(@NonNull Map<Student, List<Course>> studentsCourses) {
+        for (Map.Entry<Student, List<Course>> entry : studentsCourses.entrySet()) {
+            Student student = entry.getKey();
+            List<Course> courses = entry.getValue();
+            for (Course course : courses) {
+                assignToCourse(student.getId(), course.getId());
+            }
+        }
+    }
+
+    @Override
+    public List<Student> getAllByCourseName(@NonNull String courseName) {
+        return studentDao.getAllByCourseName(courseName);
+    }
+
+    @Override
+    public void assignToCourse(int studentId, int courseId) {
+        int result = studentDao.assignToCourse(studentId, courseId);
+        if (result != 1) {
+            throw new IllegalStateException(String.format("Cannot assign student with id %d to course with id %d", studentId, courseId));
+        }
+    }
+
+    @Override
+    public void deleteFromCourse(int studentId, int courseId) {
+        int result = studentDao.deleteFromCourse(studentId, courseId);
+        if (result != 1) {
+            throw new IllegalStateException(String.format("Cannot delete student with id %d from course with id %d", studentId, courseId));
+        }
     }
 }

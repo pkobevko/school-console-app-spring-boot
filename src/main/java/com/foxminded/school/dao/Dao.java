@@ -15,4 +15,6 @@ public interface Dao<T> {
     int update(@NonNull T entity);
 
     int delete(int id);
+
+    void saveAll(@NonNull List<T> entities);
 }

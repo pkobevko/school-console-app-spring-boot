@@ -15,4 +15,8 @@ public interface CourseService {
     void update(@NonNull Course course);
 
     void deleteById(int id);
+
+    List<Course> getAllByStudentId(int studentId);
+
+    Course getByName(@NonNull String courseName);
 }

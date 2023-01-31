@@ -64,4 +64,15 @@ public class CourseServiceImpl implements CourseService {
             throw new NotFoundException(String.format("Course with id %d not found", id));
         });
     }
+
+    @Override
+    public List<Course> getAllByStudentId(int studentId) {
+        return courseDao.getAllByStudentId(studentId);
+    }
+
+    @Override
+    public Course getByName(@NonNull String courseName) {
+        return courseDao.getByName(courseName)
+            .orElseThrow(() -> new NotFoundException(String.format("Course with name \"%s\" not found", courseName)));
+    }
 }

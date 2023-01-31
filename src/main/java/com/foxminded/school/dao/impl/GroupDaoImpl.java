@@ -19,6 +19,12 @@ public class GroupDaoImpl implements GroupDao {
     private static final String INSERT_GROUP_SQL = "INSERT INTO groups(name) VALUES (?);";
     private static final String UPDATE_GROUP_SQL = "UPDATE groups SET name = ? WHERE id = ?;";
     private static final String DELETE_BY_ID_SQL = "DELETE FROM groups WHERE id = ?;";
+    private static final String SELECT_ALL_BY_STUDENTS_COUNT_SQL = "SELECT groups.id, groups.name " +
+                                                                   "FROM groups LEFT JOIN students ON groups.id = students.group_id " +
+                                                                   "WHERE groups.id != 0 " +
+                                                                   "GROUP BY groups.id " +
+                                                                   "HAVING COUNT(students.group_id) <= ? " +
+                                                                   "ORDER BY groups.id;";
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Group> groupRowMapper = new GroupRowMapper();
@@ -53,5 +59,15 @@ public class GroupDaoImpl implements GroupDao {
     @Override
     public int delete(int id) {
         return jdbcTemplate.update(DELETE_BY_ID_SQL, id);
+    }
+
+    @Override
+    public void saveAll(@NonNull List<Group> groups) {
+        groups.forEach(group -> save(group));
+    }
+
+    @Override
+    public List<Group> getAllByEqualOrLessStudentsCount(int studentsCount) {
+        return jdbcTemplate.query(SELECT_ALL_BY_STUDENTS_COUNT_SQL, groupRowMapper, studentsCount);
     }
 }

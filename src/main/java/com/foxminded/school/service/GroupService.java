@@ -15,4 +15,6 @@ public interface GroupService {
     void update(@NonNull Group group);
 
     void deleteById(int id);
+
+    List<Group> getAllByEqualOrLessStudentsCount(int studentsCount);
 }
