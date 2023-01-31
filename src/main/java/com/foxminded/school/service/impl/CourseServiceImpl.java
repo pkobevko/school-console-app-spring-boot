@@ -75,4 +75,9 @@ public class CourseServiceImpl implements CourseService {
         return courseDao.getByName(courseName)
             .orElseThrow(() -> new NotFoundException(String.format("Course with name \"%s\" not found", courseName)));
     }
+
+    @Override
+    public void saveAll(@NonNull List<Course> courses) {
+        courses.forEach(course -> save(course));
+    }
 }

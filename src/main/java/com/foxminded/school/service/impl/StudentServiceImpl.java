@@ -98,4 +98,9 @@ public class StudentServiceImpl implements StudentService {
             throw new IllegalStateException(String.format("Cannot delete student with id %d from course with id %d", studentId, courseId));
         }
     }
+
+    @Override
+    public void saveAll(@NonNull List<Student> students) {
+        students.forEach(student -> save(student));
+    }
 }

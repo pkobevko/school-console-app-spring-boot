@@ -61,11 +61,6 @@ public class StudentDaoImpl implements StudentDao {
     }
 
     @Override
-    public void saveAll(@NonNull List<Student> students) {
-        students.forEach(student -> save(student));
-    }
-
-    @Override
     public List<Student> getAllByCourseName(@NonNull String courseName) {
         return jdbcTemplate.query(SELECT_STUDENTS_BY_COURSE_NAME_SQL, studentRowMapper, courseName);
     }

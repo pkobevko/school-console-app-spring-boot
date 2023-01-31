@@ -62,11 +62,6 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public void saveAll(@NonNull List<Group> groups) {
-        groups.forEach(group -> save(group));
-    }
-
-    @Override
     public List<Group> getAllByEqualOrLessStudentsCount(int studentsCount) {
         return jdbcTemplate.query(SELECT_ALL_BY_STUDENTS_COUNT_SQL, groupRowMapper, studentsCount);
     }

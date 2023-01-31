@@ -25,4 +25,6 @@ public interface StudentService {
     void assignToCourse(int studentId, int courseId);
 
     void deleteFromCourse(int studentId, int courseId);
+
+    void saveAll(@NonNull List<Student> students);
 }

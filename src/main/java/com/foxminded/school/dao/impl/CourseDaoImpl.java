@@ -60,11 +60,6 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public void saveAll(@NonNull List<Course> courses) {
-        courses.forEach(course -> save(course));
-    }
-
-    @Override
     public List<Course> getAllByStudentId(int studentId) {
         return jdbcTemplate.query(SELECT_ALL_BY_STUDENT_ID_SQL, courseRowMapper, studentId);
     }

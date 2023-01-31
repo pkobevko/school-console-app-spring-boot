@@ -19,4 +19,6 @@ public interface CourseService {
     List<Course> getAllByStudentId(int studentId);
 
     Course getByName(@NonNull String courseName);
+
+    void saveAll(@NonNull List<Course> courses);
 }

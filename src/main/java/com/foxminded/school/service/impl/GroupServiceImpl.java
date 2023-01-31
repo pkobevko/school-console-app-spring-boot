@@ -69,4 +69,9 @@ public class GroupServiceImpl implements GroupService {
     public List<Group> getAllByEqualOrLessStudentsCount(int studentsCount) {
         return groupDao.getAllByEqualOrLessStudentsCount(studentsCount);
     }
+
+    @Override
+    public void saveAll(@NonNull List<Group> groups) {
+        groups.forEach(group -> save(group));
+    }
 }
