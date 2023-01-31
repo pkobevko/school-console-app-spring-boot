@@ -12,7 +12,7 @@ CREATE TABLE students (
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     CONSTRAINT students_pkey PRIMARY KEY (id),
-    CONSTRAINT students_group_fkey FOREIGN KEY (group_id) REFERENCES groups (id)
+    CONSTRAINT students_group_id_fkey FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE SET DEFAULT
 );
 
 CREATE TABLE courses (
