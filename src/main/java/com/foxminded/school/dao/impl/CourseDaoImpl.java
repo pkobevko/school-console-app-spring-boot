@@ -2,8 +2,7 @@ package com.foxminded.school.dao.impl;
 
 import com.foxminded.school.dao.CourseDao;
 import com.foxminded.school.dao.rowmapper.CourseRowMapper;
-import com.foxminded.school.exception.NotFoundException;
-import com.foxminded.school.model.Course;
+import com.foxminded.school.entity.Course;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CourseDaoImpl implements CourseDao {
@@ -19,7 +19,6 @@ public class CourseDaoImpl implements CourseDao {
     private static final String INSERT_COURSE_SQL = "INSERT INTO courses(name, description) VALUES (?, ?);";
     private static final String UPDATE_COURSE_SQL = "UPDATE courses SET name = ?, description = ? WHERE id = ?;";
     private static final String DELETE_BY_ID_SQL = "DELETE FROM courses WHERE id = ?;";
-    private static final int NUMBER_OF_ROWS_SUCCESSFUL = 1;
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Course> courseRowMapper = new CourseRowMapper();
@@ -30,11 +29,10 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public Course get(int id) {
+    public Optional<Course> get(int id) {
         return jdbcTemplate.query(SELECT_BY_ID_SQL, courseRowMapper, id)
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException(String.format("Course with id %d not found", id)));
+            .stream()
+            .findFirst();
     }
 
     @Override
@@ -43,24 +41,17 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public boolean save(@NonNull Course course) {
-        int result = jdbcTemplate.update(INSERT_COURSE_SQL, course.getName(), course.getDescription());
-        return result == 1 ? true : false;
+    public int save(@NonNull Course course) {
+        return jdbcTemplate.update(INSERT_COURSE_SQL, course.getName(), course.getDescription());
     }
 
     @Override
-    public boolean update(@NonNull Course course) {
-        int result = jdbcTemplate.update(UPDATE_COURSE_SQL, course.getName(), course.getDescription(), course.getId());
-        return result == 1 ? true : false;
+    public int update(@NonNull Course course) {
+        return jdbcTemplate.update(UPDATE_COURSE_SQL, course.getName(), course.getDescription(), course.getId());
     }
 
     @Override
-    public boolean delete(int id) {
-        int result = jdbcTemplate.update(DELETE_BY_ID_SQL, id);
-        if (result == NUMBER_OF_ROWS_SUCCESSFUL) {
-            return true;
-        } else {
-            throw new NotFoundException(String.format("Course with id %d not found", id));
-        }
+    public int delete(int id) {
+        return jdbcTemplate.update(DELETE_BY_ID_SQL, id);
     }
 }

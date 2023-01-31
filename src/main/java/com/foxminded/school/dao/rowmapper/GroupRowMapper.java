@@ -1,6 +1,6 @@
 package com.foxminded.school.dao.rowmapper;
 
-import com.foxminded.school.model.Group;
+import com.foxminded.school.entity.Group;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

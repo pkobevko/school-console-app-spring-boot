@@ -1,4 +1,4 @@
-package com.foxminded.school.model;
+package com.foxminded.school.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Group {
+public class Student {
     private Integer id;
-    private String name;
+    private Integer groupId;
+    private String firstName;
+    private String lastName;
 }
