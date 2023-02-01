@@ -4,6 +4,7 @@ import com.foxminded.school.entity.Course;
 import com.foxminded.school.entity.Group;
 import com.foxminded.school.entity.Student;
 import com.foxminded.school.util.data.Data;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,8 +15,6 @@ import java.util.Map;
 
 @Service
 public class DataGeneratorService implements ApplicationRunner {
-    private final Data data = new Data();
-
     private CourseService courseService;
     private GroupService groupService;
     private StudentService studentService;
@@ -27,7 +26,7 @@ public class DataGeneratorService implements ApplicationRunner {
         this.studentService = studentService;
     }
 
-    public void insertTestDataInDatabase() {
+    public void insertTestDataInDatabase(@NonNull Data data) {
         List<Group> groups = data.getGroups();
         groupService.saveAll(groups);
 
@@ -43,7 +42,8 @@ public class DataGeneratorService implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if (courseService.getAll().isEmpty() && groupService.getAll().isEmpty() && studentService.getAll().isEmpty()) {
-            insertTestDataInDatabase();
+            Data data = new Data();
+            insertTestDataInDatabase(data);
         }
     }
 }
