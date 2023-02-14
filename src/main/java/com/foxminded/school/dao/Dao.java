@@ -10,9 +10,9 @@ public interface Dao<T> {
 
     List<T> getAll();
 
-    int save(@NonNull T entity);
+    boolean save(@NonNull T entity);
 
-    int update(@NonNull T entity);
+    boolean update(@NonNull T entity);
 
-    int delete(int id);
+    boolean delete(int id);
 }

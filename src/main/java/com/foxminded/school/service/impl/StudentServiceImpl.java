@@ -35,8 +35,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void save(@NonNull Student student) {
-        int result = studentDao.save(student);
-        if (result != 1) {
+        boolean saved = studentDao.save(student);
+        if (!saved) {
             throw new IllegalStateException("Cannot save student");
         }
     }
@@ -45,8 +45,8 @@ public class StudentServiceImpl implements StudentService {
     public void update(@NonNull Student student) {
         Optional<Student> studentOptional = studentDao.get(student.getId());
         studentOptional.ifPresentOrElse(presentStudent -> {
-            int result = studentDao.update(student);
-            if (result != 1) {
+            boolean updated = studentDao.update(student);
+            if (!updated) {
                 throw new IllegalStateException("Cannot update student");
             }
         }, () -> {
@@ -58,8 +58,8 @@ public class StudentServiceImpl implements StudentService {
     public void deleteById(int id) {
         Optional<Student> studentOptional = studentDao.get(id);
         studentOptional.ifPresentOrElse(student -> {
-            int result = studentDao.delete(id);
-            if (result != 1) {
+            boolean deleted = studentDao.delete(id);
+            if (!deleted) {
                 throw new IllegalStateException(String.format("Cannot delete student with id %d", id));
             }
         }, () -> {

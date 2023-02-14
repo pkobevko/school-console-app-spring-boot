@@ -33,8 +33,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void save(@NonNull Course course) {
-        int result = courseDao.save(course);
-        if (result != 1) {
+        boolean saved = courseDao.save(course);
+        if (!saved) {
             throw new IllegalStateException("Cannot save course");
         }
     }
@@ -43,8 +43,8 @@ public class CourseServiceImpl implements CourseService {
     public void update(@NonNull Course course) {
         Optional<Course> courseOptional = courseDao.get(course.getId());
         courseOptional.ifPresentOrElse(presentCourse -> {
-            int result = courseDao.update(course);
-            if (result != 1) {
+            boolean updated = courseDao.update(course);
+            if (!updated) {
                 throw new IllegalStateException("Cannot update course");
             }
         }, () -> {
@@ -56,8 +56,8 @@ public class CourseServiceImpl implements CourseService {
     public void deleteById(int id) {
         Optional<Course> courseOptional = courseDao.get(id);
         courseOptional.ifPresentOrElse(course -> {
-            int result = courseDao.delete(id);
-            if (result != 1) {
+            boolean deleted = courseDao.delete(id);
+            if (!deleted) {
                 throw new IllegalStateException(String.format("Cannot delete course with id %d", id));
             }
         }, () -> {

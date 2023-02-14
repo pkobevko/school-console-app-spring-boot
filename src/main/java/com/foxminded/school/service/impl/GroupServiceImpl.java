@@ -33,8 +33,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void save(@NonNull Group group) {
-        int result = groupDao.save(group);
-        if (result != 1) {
+        boolean saved = groupDao.save(group);
+        if (!saved) {
             throw new IllegalStateException("Cannot save group");
         }
     }
@@ -43,8 +43,8 @@ public class GroupServiceImpl implements GroupService {
     public void update(@NonNull Group group) {
         Optional<Group> groupOptional = groupDao.get(group.getId());
         groupOptional.ifPresentOrElse(presentGroup -> {
-            int result = groupDao.update(group);
-            if (result != 1) {
+            boolean updated = groupDao.update(group);
+            if (!updated) {
                 throw new IllegalStateException("Cannot update group");
             }
         }, () -> {
@@ -56,8 +56,8 @@ public class GroupServiceImpl implements GroupService {
     public void deleteById(int id) {
         Optional<Group> groupOptional = groupDao.get(id);
         groupOptional.ifPresentOrElse(group -> {
-            int result = groupDao.delete(id);
-            if (result != 1) {
+            boolean deleted = groupDao.delete(id);
+            if (!deleted) {
                 throw new IllegalStateException(String.format("Cannot delete group with id %d", id));
             }
         }, () -> {

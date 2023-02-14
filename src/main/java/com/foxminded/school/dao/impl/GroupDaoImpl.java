@@ -25,6 +25,7 @@ public class GroupDaoImpl implements GroupDao {
                                                                    "GROUP BY groups.id " +
                                                                    "HAVING COUNT(students.group_id) <= ? " +
                                                                    "ORDER BY groups.id;";
+    private static final int ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION = 1;
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Group> groupRowMapper = new GroupRowMapper();
@@ -47,18 +48,18 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public int save(@NonNull Group group) {
-        return jdbcTemplate.update(INSERT_GROUP_SQL, group.getName());
+    public boolean save(@NonNull Group group) {
+        return jdbcTemplate.update(INSERT_GROUP_SQL, group.getName()) == ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION;
     }
 
     @Override
-    public int update(@NonNull Group group) {
-        return jdbcTemplate.update(UPDATE_GROUP_SQL, group.getName(), group.getId());
+    public boolean update(@NonNull Group group) {
+        return jdbcTemplate.update(UPDATE_GROUP_SQL, group.getName(), group.getId()) == ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION;
     }
 
     @Override
-    public int delete(int id) {
-        return jdbcTemplate.update(DELETE_BY_ID_SQL, id);
+    public boolean delete(int id) {
+        return jdbcTemplate.update(DELETE_BY_ID_SQL, id) == ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION;
     }
 
     @Override

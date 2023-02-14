@@ -24,6 +24,7 @@ public class StudentDaoImpl implements StudentDao {
     private static final String SELECT_STUDENTS_BY_COURSE_NAME_SQL = "SELECT students.id, students.group_id, students.first_name, students.last_name "
                                                                      + "FROM students_courses INNER JOIN students ON students.id = students_courses.student_id "
                                                                      + "INNER JOIN courses ON courses.id = students_courses.course_id WHERE courses.name = ?;";
+    private static final int ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION = 1;
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Student> studentRowMapper = new StudentRowMapper();
@@ -46,18 +47,18 @@ public class StudentDaoImpl implements StudentDao {
     }
 
     @Override
-    public int save(Student student) {
-        return jdbcTemplate.update(INSERT_STUDENT_SQL, student.getGroupId(), student.getFirstName(), student.getLastName());
+    public boolean save(Student student) {
+        return jdbcTemplate.update(INSERT_STUDENT_SQL, student.getGroupId(), student.getFirstName(), student.getLastName()) == ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION;
     }
 
     @Override
-    public int update(Student student) {
-        return jdbcTemplate.update(UPDATE_STUDENT_SQL, student.getGroupId(), student.getFirstName(), student.getLastName(), student.getId());
+    public boolean update(Student student) {
+        return jdbcTemplate.update(UPDATE_STUDENT_SQL, student.getGroupId(), student.getFirstName(), student.getLastName(), student.getId()) == ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION;
     }
 
     @Override
-    public int delete(int id) {
-        return jdbcTemplate.update(DELETE_BY_ID_SQL, id);
+    public boolean delete(int id) {
+        return jdbcTemplate.update(DELETE_BY_ID_SQL, id) == ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION;
     }
 
     @Override

@@ -23,6 +23,7 @@ public class CourseDaoImpl implements CourseDao {
                                                                "FROM students_courses INNER JOIN courses ON courses.id = students_courses.course_id " +
                                                                "WHERE student_id = ?;";
     private static final String SELECT_BY_COURSE_NAME_SQL = "SELECT * FROM courses WHERE courses.name = ?;";
+    private static final int ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION = 1;
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Course> courseRowMapper = new CourseRowMapper();
@@ -45,18 +46,18 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public int save(@NonNull Course course) {
-        return jdbcTemplate.update(INSERT_COURSE_SQL, course.getName(), course.getDescription());
+    public boolean save(@NonNull Course course) {
+        return jdbcTemplate.update(INSERT_COURSE_SQL, course.getName(), course.getDescription()) == ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION;
     }
 
     @Override
-    public int update(@NonNull Course course) {
-        return jdbcTemplate.update(UPDATE_COURSE_SQL, course.getName(), course.getDescription(), course.getId());
+    public boolean update(@NonNull Course course) {
+        return jdbcTemplate.update(UPDATE_COURSE_SQL, course.getName(), course.getDescription(), course.getId()) == ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION;
     }
 
     @Override
-    public int delete(int id) {
-        return jdbcTemplate.update(DELETE_BY_ID_SQL, id);
+    public boolean delete(int id) {
+        return jdbcTemplate.update(DELETE_BY_ID_SQL, id) == ROWS_AFFECTED_ON_SUCCESSFUL_OPERATION;
     }
 
     @Override
