@@ -55,11 +55,11 @@ public class StudentServiceImpl implements StudentService {
         studentOptional.ifPresentOrElse(presentStudent -> {
             boolean updated = studentDao.update(student);
             if (!updated) {
-                LOGGER.error("Error updating student %s", student);
+                LOGGER.error(String.format("Error updating student %s", student));
                 throw new IllegalStateException("Cannot update student");
             }
         }, () -> {
-            LOGGER.error("Error finding student with id %d", student.getId());
+            LOGGER.error(String.format("Error finding student with id %d", student.getId()));
             throw new NotFoundException(String.format("Student with id %d not found", student.getId()));
         });
     }
@@ -108,7 +108,7 @@ public class StudentServiceImpl implements StudentService {
     public void deleteFromCourse(int studentId, int courseId) {
         int result = studentDao.deleteFromCourse(studentId, courseId);
         if (result != 1) {
-            LOGGER.error("Error deleting student with id %d from course with id %d", studentId, courseId);
+            LOGGER.error(String.format("Error deleting student with id %d from course with id %d", studentId, courseId));
             throw new IllegalStateException(String.format("Cannot delete student with id %d from course with id %d", studentId, courseId));
         }
     }
