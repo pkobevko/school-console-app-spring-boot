@@ -6,6 +6,8 @@ import com.foxminded.school.entity.Student;
 import com.foxminded.school.exception.NotFoundException;
 import com.foxminded.school.service.StudentService;
 import lombok.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentServiceImpl.class);
+
     private final StudentDao studentDao;
 
     @Autowired
@@ -25,7 +29,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getById(int id) {
         return studentDao.get(id)
-            .orElseThrow(() -> new NotFoundException(String.format("Student with id %d not found", id)));
+            .orElseThrow(() -> {
+                LOGGER.error(String.format("Error finding student with id %d", id));
+                throw new NotFoundException(String.format("Student with id %d not found", id));
+            });
     }
 
     @Override
@@ -37,6 +44,7 @@ public class StudentServiceImpl implements StudentService {
     public void save(@NonNull Student student) {
         boolean saved = studentDao.save(student);
         if (!saved) {
+            LOGGER.error(String.format("Error saving student %s", student));
             throw new IllegalStateException("Cannot save student");
         }
     }
@@ -47,9 +55,11 @@ public class StudentServiceImpl implements StudentService {
         studentOptional.ifPresentOrElse(presentStudent -> {
             boolean updated = studentDao.update(student);
             if (!updated) {
+                LOGGER.error("Error updating student %s", student);
                 throw new IllegalStateException("Cannot update student");
             }
         }, () -> {
+            LOGGER.error("Error finding student with id %d", student.getId());
             throw new NotFoundException(String.format("Student with id %d not found", student.getId()));
         });
     }
@@ -60,9 +70,11 @@ public class StudentServiceImpl implements StudentService {
         studentOptional.ifPresentOrElse(student -> {
             boolean deleted = studentDao.delete(id);
             if (!deleted) {
+                LOGGER.error(String.format("Error deleting student with id %d", id));
                 throw new IllegalStateException(String.format("Cannot delete student with id %d", id));
             }
         }, () -> {
+            LOGGER.error(String.format("Error finding student with id %d", id));
             throw new NotFoundException(String.format("Student with id %d not found", id));
         });
     }
@@ -87,6 +99,7 @@ public class StudentServiceImpl implements StudentService {
     public void assignToCourse(int studentId, int courseId) {
         int result = studentDao.assignToCourse(studentId, courseId);
         if (result != 1) {
+            LOGGER.error(String.format("Error assigning student with id %d to course with id %d", studentId, courseId));
             throw new IllegalStateException(String.format("Cannot assign student with id %d to course with id %d", studentId, courseId));
         }
     }
@@ -95,6 +108,7 @@ public class StudentServiceImpl implements StudentService {
     public void deleteFromCourse(int studentId, int courseId) {
         int result = studentDao.deleteFromCourse(studentId, courseId);
         if (result != 1) {
+            LOGGER.error("Error deleting student with id %d from course with id %d", studentId, courseId);
             throw new IllegalStateException(String.format("Cannot delete student with id %d from course with id %d", studentId, courseId));
         }
     }

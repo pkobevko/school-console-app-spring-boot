@@ -5,6 +5,8 @@ import com.foxminded.school.entity.Group;
 import com.foxminded.school.exception.NotFoundException;
 import com.foxminded.school.service.GroupService;
 import lombok.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import java.util.Optional;
 
 @Service
 public class GroupServiceImpl implements GroupService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroupServiceImpl.class);
+
     private final GroupDao groupDao;
 
     @Autowired
@@ -23,7 +27,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public Group getById(int id) {
         return groupDao.get(id)
-            .orElseThrow(() -> new NotFoundException(String.format("Group with id %d not found", id)));
+            .orElseThrow(() -> {
+                LOGGER.error(String.format("Error finding group with id %d", id));
+                throw new NotFoundException(String.format("Group with id %d not found", id));
+            });
     }
 
     @Override
@@ -35,6 +42,7 @@ public class GroupServiceImpl implements GroupService {
     public void save(@NonNull Group group) {
         boolean saved = groupDao.save(group);
         if (!saved) {
+            LOGGER.error(String.format("Error saving group %s", group));
             throw new IllegalStateException("Cannot save group");
         }
     }
@@ -45,9 +53,11 @@ public class GroupServiceImpl implements GroupService {
         groupOptional.ifPresentOrElse(presentGroup -> {
             boolean updated = groupDao.update(group);
             if (!updated) {
+                LOGGER.error(String.format("Error updating group %s", group));
                 throw new IllegalStateException("Cannot update group");
             }
         }, () -> {
+            LOGGER.error(String.format("Error finding group with id %d", group.getId()));
             throw new NotFoundException(String.format("Group with id %d not found", group.getId()));
         });
     }
@@ -58,9 +68,11 @@ public class GroupServiceImpl implements GroupService {
         groupOptional.ifPresentOrElse(group -> {
             boolean deleted = groupDao.delete(id);
             if (!deleted) {
+                LOGGER.error(String.format("Error deleting group with id %d", id));
                 throw new IllegalStateException(String.format("Cannot delete group with id %d", id));
             }
         }, () -> {
+            LOGGER.error(String.format("Error finding group with id %d", id));
             throw new NotFoundException(String.format("Group with id %d not found", id));
         });
     }
