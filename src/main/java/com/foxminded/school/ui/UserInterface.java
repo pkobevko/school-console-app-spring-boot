@@ -37,19 +37,19 @@ public class UserInterface implements ApplicationRunner {
             printMainMenu();
             String input = scanner.next();
             System.out.println();
-            if (input.equals("1")) {
+            if (input.equals(MenuOptions.FIND_GROUPS_BY_EQUAL_OR_LESS_STUDENTS_COUNT.getMenuInput())) {
                 findGroupsByEqualOrLessStudentsCount();
-            } else if (input.equals("2")) {
+            } else if (input.equals(MenuOptions.FIND_STUDENTS_BY_COURSE_NAME.getMenuInput())) {
                 findStudentsByCourseName();
-            } else if (input.equals("3")) {
+            } else if (input.equals(MenuOptions.ADD_NEW_STUDENT.getMenuInput())) {
                 addNewStudent();
-            } else if (input.equals("4")) {
+            } else if (input.equals(MenuOptions.DELETE_STUDENT_BY_ID.getMenuInput())) {
                 deleteStudentById();
-            } else if (input.equals("5")) {
+            } else if (input.equals(MenuOptions.ADD_STUDENT_TO_COURSE.getMenuInput())) {
                 addStudentToCourse();
-            } else if (input.equals("6")) {
+            } else if (input.equals(MenuOptions.REMOVE_STUDENT_FROM_COURSE.getMenuInput())) {
                 removeStudentCourse();
-            } else if (input.equals("q")) {
+            } else if (input.equals(MenuOptions.EXIT.getMenuInput())) {
                 exit = true;
                 System.out.println("Exiting...");
             }
@@ -193,5 +193,25 @@ public class UserInterface implements ApplicationRunner {
     private void printCourse(Course course) {
         System.out.println(String.format("Course ID: %d | Course name: %s | Course description: %s", course.getId(),
             course.getName(), course.getDescription()));
+    }
+
+    public enum MenuOptions {
+        FIND_GROUPS_BY_EQUAL_OR_LESS_STUDENTS_COUNT("1"),
+        FIND_STUDENTS_BY_COURSE_NAME("2"),
+        ADD_NEW_STUDENT("3"),
+        DELETE_STUDENT_BY_ID("4"),
+        ADD_STUDENT_TO_COURSE("5"),
+        REMOVE_STUDENT_FROM_COURSE("6"),
+        EXIT("q");
+
+        private final String menuInput;
+
+        MenuOptions(String menuNumber) {
+            this.menuInput = menuNumber;
+        }
+
+        public String getMenuInput() {
+            return menuInput;
+        }
     }
 }
